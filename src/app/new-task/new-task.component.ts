@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '../services/authentication.service';
 
 @Component({
   selector: 'app-new-task',
@@ -6,10 +7,22 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./new-task.component.css']
 })
 export class NewTaskComponent implements OnInit {
-
-  constructor() { }
+  task;
+  mode = 1;
+  constructor(private _auth: AuthenticationService) { }
 
   ngOnInit() {
+  }
+
+  onSaveTask(task){
+    this._auth.saveTask(task)
+      .subscribe(resp=>{
+        this.task = resp;
+        this.mode = 2;
+
+      }, err =>{
+        this.mode = 0;
+      });
   }
 
 }
